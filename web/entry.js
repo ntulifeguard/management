@@ -74,5 +74,5 @@ function get_greetingText() {
 
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename)
-      .getContent();
+    .getContent();
 }
