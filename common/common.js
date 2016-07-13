@@ -39,8 +39,8 @@ function get_userData(email) {
 }
 
 
-function get_columnHeaders(ss_id) {
-  var gviz_url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20*%%20where%%20(%%20A%%20%%3D%%20-1%%20)", ss_id) 
+function get_columnHeaders() {
+  var gviz_url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20*%%20where%%20(%%20A%%20%%3D%%20-1%%20)", id.ss) 
 
   var response = UrlFetchApp.fetch(gviz_url)
   var code = response.getResponseCode()

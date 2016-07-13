@@ -1,8 +1,5 @@
-//
 var form = FormApp.openById(id.form);
 var email = Session.getActiveUser().getEmail()
-var column_headers = comm.get_columnHeaders(id.ss) 
-
 
 function installTrigger() {
   ScriptApp.newTrigger('onSubmit')
@@ -44,7 +41,7 @@ function onSubmit(e) {
   Logger.log("index="+index)
 
   if( index > 0 ) {
-    var cell = column_headers["edit2_id"] + index.toString()
+    var cell = comm.column_headers["edit2_id"] + index.toString()
     Logger.log(cell)
     var r_edit2 = sheet.getRange(cell)
     r_edit2.setValue(formResponse_id)
@@ -55,7 +52,7 @@ function onSubmit(e) {
 
 
 function get_rowNumber(inputed_email) {
-  var url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20%s", id.ss, column_headers["Email"])
+  var url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20%s", id.ss, comm.column_headers["Email"])
   
   var response = UrlFetchApp.fetch(url)
   var text = response.getContentText()
