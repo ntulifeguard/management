@@ -30,6 +30,7 @@ function gviz_query(ss_id, query, column_headers) {
 var column_headers = get_columnHeaders(id.ss)
 
 function get_userData(email) {
+  Logger.log( column_headers)
   if( column_headers != null ) {
     var query = Utilities.formatString("select * where ( %s = '%s' )", column_headers["Email"], email)
     var userData = gviz_query(id.ss, query, column_headers)
@@ -60,8 +61,23 @@ function get_columnHeaders() {
   var cols = data["cols"]
   var obj = {}
   for( var i in cols ) {
-
-    obj[cols[i]["label"]] = cols[i]["id"]
+   
+    var label = cols[i]["label"]
+    if( label != "" ) {
+      obj[label] = cols[i]["id"]
+    }
   }
-  return obj
+  
+  var objcount = 0;
+  for( var o in obj ) {
+    objcount++
+  }
+  
+  if( obj > 0 ) {
+    return obj
+  } else {
+    return null
+  }
+  
+  
 }
