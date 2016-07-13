@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>  
+    <base target="_top">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  </head>
+  <style>
+    #account {
+      margin-top: 10px
+    }  
+    
+  </style>
+  <body>
+  <div class="container">
+
+    <!-------->
+    <div id="content">
+      <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active"><a href="#wellcome" data-toggle="tab">首頁</a></li>
+        <li><a href="#um" data-toggle="tab">資料管理</a></li>
+        <li><a href="#class" data-toggle="tab">救生班開班事務</a></li>
+        <li><a href="#about" data-toggle="tab">關於</a></li>
+          <div id="account" align="right">登入帳號:<?= email ?> (<a href="<?= get_logoutUrl() ?>">登出</a>)</div>
+      </ul>
+      
+      <div id="my-tab-content" class="tab-content">
+        <br>
+        <div class="tab-pane active" id="wellcome">
+          <h3><?!= get_greetingText() ?></h3>  
+          <br><br>
+          <div id="links">
+            <?!= include('links.html') ?>
+          </div>
+        </div>
+ 
+        <div class="tab-pane" id="um">         
+          <li> <a href="<?= get_umUrl() ?>" target="_blank">基本資料維護</a> </li>
+          <li>證件上傳(第一次使用需先取得驗證)<br><iframe scrolling="no" height="200" width="100%" src="<?= get_uploaderUrl() ?>"></iframe> </li>
+        </div>
+        
+        <div class="tab-pane" id="class">
+          34期即將開班
+        </div>
+        
+        <div class="tab-pane" id="about">
+          版本: <?= this_version ?> <br>
+          開發者: 水服工程師團隊 <br>
+          程式碼: https://github.com/ntulifeguard/user_management <br>
+          協助開發&問題回報: 請來信 ntulifeguard.sys@gmail.com
+        </div>
+              
+      </div>
+    </div>
+  </div> <!-- container -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </body>
+</html>

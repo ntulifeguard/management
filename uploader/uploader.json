@@ -1,0 +1,15 @@
+{
+    "files": [
+        {
+            "type": "server_js", 
+            "id": "3ed23b8b-8401-4718-98aa-43bfa3d2eae3", 
+            "name": "uploader"
+        }, 
+        {
+            "type": "html", 
+            "id": "004bff44-a8bc-45b1-8245-fef78a8ecd40", 
+            "name": "form"
+        }
+    ], 
+    "id": "1iZjnISMIqTkZnruqP-M9uJeMy_w6tMW1bAjAJfRV1JeK-6cjmUoX3Ipc"
+}

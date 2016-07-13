@@ -1,0 +1,55 @@
+<div id="formDiv">
+  <!-- <font color="blue">證件上傳</font><br> -->
+  * 每個圖檔大小不得超過2MB
+  <form id="myForm">
+      大頭照: <input name="headshot" type="file" onclick="updateOutput('')" /><br/>
+      救生證正面: <input name="license1" type="file" onclick="updateOutput('')" /><br/>
+      教練證正面: <input name="license2" type="file" onclick="updateOutput('')" /><br/>
+      <input type="button" value="上傳" onclick="picUploadJs(this.parentNode)" />
+  </form>
+</div>
+
+
+<div id="status" style="display: inline">
+  <!-- div will be filled with innerHTML after form submission. -->
+  <!-- // Uploading. Please wait... -->
+</div>
+
+
+<script>
+
+function picUploadJs(frmData) {
+
+  document.getElementById('status').style.display = 'inline';
+//  var outputDiv = document.getElementById('status');
+//  outputDiv.innerHTML = "Uploading";
+  updateOutput("上傳中...")
+
+  var ret = google.script.run
+    .withSuccessHandler(doneOutput)
+    .withFailureHandler(badOutput)
+    .processForm(frmData)
+};
+  // Javascript function called by "submit" button handler,
+  // to show results.
+
+function updateOutput(text) {
+  var outputDiv = document.getElementById('status');
+  outputDiv.style.color="blue"
+  outputDiv.innerHTML = text;
+}
+
+function doneOutput() {
+  var outputDiv = document.getElementById('status');
+  outputDiv.style.color="green"
+  outputDiv.innerHTML = "上傳成功!";
+}
+
+function badOutput() {
+  var outputDiv = document.getElementById('status');
+  outputDiv.style.color="red"
+  outputDiv.innerHTML = "失敗! 請重新上傳!";
+}
+
+
+</script>
