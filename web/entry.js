@@ -8,6 +8,7 @@ var user = comm.get_userData(email)
 
 
 function doGet(e) {
+  Logger.log(e)
   return HtmlService
       .createTemplateFromFile('index')
       .evaluate()
