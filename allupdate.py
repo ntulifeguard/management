@@ -8,6 +8,7 @@ import re
 rootDir = os.getcwd()
 for dirName, subdirList, fileList in os.walk(rootDir):
     print('Found directory: %s' % dirName)
+    subdirList[:] = [d for d in subdirList if d[0] != "."]
 
     for fname in fileList:
         r = re.match("^.*\.json$", fname)
