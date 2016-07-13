@@ -16,16 +16,6 @@ function doGet(e) {
 }
 
 
-function get_usexrData() {
-  var column_headers = comm.get_columnHeaders(id.ss)
-  
-  var query = Utilities.formatString("select * where ( %s = '%s' )", column_headers["Email"], email)
-  var userData = comm.gviz_query(id.ss, query, column_headers)
-  
-  return userData
-}
-
-
 function get_formEdit2Url(edit2_id) {
   var url = Utilities.formatString("https://docs.google.com/forms/d/%s/viewform?edit2=%s&hl=%s", id.form, edit2_id, language_code)
   return url

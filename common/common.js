@@ -30,8 +30,6 @@ function gviz_query(ss_id, query, column_headers) {
 var column_headers = get_columnHeaders(id.ss)
 
 function get_userData(email) {
-
-  
   var query = Utilities.formatString("select * where ( %s = '%s' )", column_headers["Email"], email)
   var userData = gviz_query(id.ss, query, column_headers)
   
