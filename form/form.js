@@ -8,6 +8,8 @@ function installTrigger() {
      .create();
 }
 
+var columnHeaders = {}
+
 function onSubmit(e) {
   Logger.log(e)
   var form_title = form.getTitle()
@@ -32,16 +34,22 @@ function onSubmit(e) {
       inputed_email = itemResponses[i].getResponse()
     }
   }
-  
+
+
+  if( comm.get_columnHeaders(columnHeaders) ) {
+    Logger.log(columnHeaders)
+  } else {
+    throw "Failed to call columnHeaders()"
+  }
   Logger.log("inputed_email="+inputed_email)
   
   var retries = 0;
-  var index = get_rowNumber(inputed_email)
+  var index = get_rowNumber(inputed_email, columnHeaders)
 
   Logger.log("index="+index)
 
   if( index > 0 ) {
-    var cell = comm.column_headers["edit2_id"] + index.toString()
+    var cell = columnHeaders["edit2_id"] + index.toString()
     Logger.log(cell)
     var r_edit2 = sheet.getRange(cell)
     r_edit2.setValue(formResponse_id)
@@ -51,38 +59,37 @@ function onSubmit(e) {
 }
 
 
-function get_rowNumber(inputed_email) {
-  var url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20%s", id.ss, comm.column_headers["Email"])
-  
+
+function get_rowNumber(inputed_email, columnHeaders) {
+  var url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20%s", id.ss, columnHeaders["Email"])
   var response = UrlFetchApp.fetch(url)
   var text = response.getContentText()
-  Logger.log(text)
-
+  
   var pat = /"rows":(.+)}}\);/ig
   var list = pat.exec(text)
   //var r = text.match(pat)
   if( list == null ) {
-    Logger.log("not found")
+    Logger.log("get_rowNumber(): not found")
     return null
   }
   
   var data = JSON.parse(list[1]); 
   var found = false;
   var row_index;
-  Logger.log(data)
+  //Logger.log(data)
   
   for(row_index=0;row_index<data.length;row_index++) {
     Logger.log(data[row_index])
     if( data[row_index]["c"][0]["v"] == inputed_email ) {
       found = true;
-      Logger.log("Found")
-      Logger.log("row_index="+row_index)
+      Logger.log("get_rowNumber: Found")     
       break;
     }   
   }
 
   if(found) {
     row_index=row_index+2;
+    Logger.log("row_index="+row_index)
     return (row_index);
   } else {
     return -1

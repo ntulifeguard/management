@@ -4,10 +4,16 @@ var email = Session.getActiveUser().getEmail()
 var language_code = "zh_TW"
 
 var service_url = ScriptApp.getService().getUrl() + "&hl=" +language_code
-var user = comm.get_userData(email)
+//var user = comm.get_userData(email)
 
+var user = {}
+var columnHeaders = {}
 
 function doGet(e) {
+ 
+  comm.get_columnHeaders(columnHeaders)
+  comm.get_userData(email, user, columnHeaders)
+  
   Logger.log(e)
   return HtmlService
       .createTemplateFromFile('index')
@@ -62,6 +68,7 @@ function get_messageBoardUrl() {
 
 function get_greetingText() {
   var text = "新朋友你好!"
+  Logger.log(comm.user)
   if( user ) {
     if( user["期數"] ) {
       text = Utilities.formatString("歡迎 %s 期的夥伴!", user["期數"])

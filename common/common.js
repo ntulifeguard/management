@@ -1,4 +1,4 @@
-function gviz_query(ss_id, query, column_headers) {
+function gviz_query(ss_id, query, user, columnHeaders) {
   var query_encoded = encodeURIComponent(query)
   var url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=%s", ss_id, query_encoded) 
   var response = UrlFetchApp.fetch(url)
@@ -13,70 +13,96 @@ function gviz_query(ss_id, query, column_headers) {
   
   var data = JSON.parse(r[1])
   
-  var obj = {}
+//  var obj = {}
   var i =0;
-  for(var d in column_headers) {
+  for(var d in columnHeaders) {
     if( data[i] != null ) {
-      obj[d] = data[i]["v"]      
+      user[d] = data[i]["v"]
     } else {
-      obj[d] = ""
+      user[d] = ""
     }
     i++
   }
   
-  return obj
+  var objcount = 0;
+  for( var o in columnHeaders ) {
+    objcount++
+  }
+
+  if( objcount > 0 ) {
+    return true
+  } else {
+    user = {}
+    return false
+  }
+  
 }
 
-var column_headers = get_columnHeaders(id.ss)
 
-function get_userData(email) {
-  Logger.log( column_headers)
-  if( column_headers != null ) {
-    var query = Utilities.formatString("select * where ( %s = '%s' )", column_headers["Email"], email)
-    var userData = gviz_query(id.ss, query, column_headers)
-    return userData
+//get_columnHeaders()
+//var columnHeaders = {};
+//var user = {};
+
+function get_userData(email, user, columnHeaders) {
+  if( columnHeaders != null ) {
+    var query = Utilities.formatString("select * where ( %s = '%s' )", columnHeaders["Email"], email)
+    gviz_query(id.ss, query, user, columnHeaders)
+    Logger.log("222222222222222")
+    Logger.log(user)
+    Logger.log("gggggggggggggggg")
+//    user = userData
+    //return userData
   } else {
-    return null
+    user = {}
+    //return null
   }
 }
 
 
-function get_columnHeaders() {
-  var gviz_url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20*%%20where%%20(%%20A%%20%%3D%%20-1%%20)", id.ss) 
+// Logger.log(arguments.callee.name+":"+)
 
+function get_columnHeaders(columnHeaders) {
+  var gviz_url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20*%%20where%%20(%%20A%%20%%3D%%20-1%%20)", id.ss) 
+  Logger.log(arguments.callee.name+":"+gviz_url)
   var response = UrlFetchApp.fetch(gviz_url)
   var code = response.getResponseCode()
   var text = response.getContentText()
-  //Logger.log(text)
+  Logger.log(arguments.callee.name+":"+text)
   var pat = /table":({.+)}\);/ig
   //
   var r = pat.exec(text)
   if( r == null ) {
-    //Logger.log("not found")
+    Logger.log(arguments.callee.name+":"+"not found")
     return null
   }
-  
-  var data = JSON.parse(r[1]);
 
+  var data = JSON.parse(r[1]);
+  Logger.log(arguments.callee.name+":data")
+  Logger.log(data)
+  
   var cols = data["cols"]
-  var obj = {}
+
   for( var i in cols ) {
    
     var label = cols[i]["label"]
     if( label != "" ) {
-      obj[label] = cols[i]["id"]
+      columnHeaders[label] = cols[i]["id"]
     }
   }
   
   var objcount = 0;
-  for( var o in obj ) {
+  for( var o in columnHeaders ) {
     objcount++
   }
   
-  if( obj > 0 ) {
-    return obj
+  Logger.log(arguments.callee.name+":columnHeaders")
+  Logger.log(columnHeaders)
+  
+  if( objcount < 1 ) {
+    columnHeaders = {}
+    return false
   } else {
-    return null
+    return true
   }
   
   
