@@ -79,6 +79,7 @@ function get_randomText() {
   "現在從我左手邊依序一伍一伍一二報數，報一的舉手，報二的不舉手，開始報數",
   "向下標齊什麼，黑線",
   "向前標齊什麼，圓錐",
+  "現在報一的向後轉 操作背面纏頸解脫轉雙手鎖肩帶人 報一的為救者 報二的為溺者 溺者上",
   // 歌
   "♬ 找一個沒有人知道的方向",
   "♬ 沒有城市的霓虹",
@@ -99,9 +100,13 @@ function get_randomText() {
   "第一局敢出失敗的壞人就只有...",
   // 工程師
   "橫向的捲動文字讓人有回到90年代的感覺",
-  // 陳星魚
+  // 星魚
   "Have you heard of Elder Scroll?",
   "ARE YOU READY FOR THIS SUNDAY NIGHT WHEN WWE CHAMP JOHN CENA DEFENDS HIS TITLE IN THE WWE SUPER SLAM?",
+  // 志浩
+  "為什麼這樣抓? 這樣抓啦 你怎麼會這樣抓腕啦 誰教你的? (謝謝教練) 謝沒用 做啦",
+  // 瑞瑜
+  "水母飄 五次，開始",
   ]
   
   var text = randomText[Math.floor(Math.random()*randomText.length)]
