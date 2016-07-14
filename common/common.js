@@ -38,6 +38,7 @@ function gviz_query(ss_id, query, user, columnHeaders) {
   
 }
 
+var cht_list = ["大頭照", "救生證", "教練證"]
 
 function get_userData(email, user, columnHeaders) {
   if( Object.keys(columnHeaders).length > 0 ) {
@@ -102,7 +103,5 @@ function get_columnHeaders(columnHeaders) {
     return false
   } else {
     return true
-  }
-  
-  
+  } 
 }

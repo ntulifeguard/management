@@ -11,10 +11,10 @@ function doGet(e) {
 
 function processForm(theForm) {
   var list = ["headshot","license1","license2"]
-  var cht_list = ["大頭照", "救生證", "教練證"]
        
   comm.get_columnHeaders(columnHeaders)
   comm.get_userData(email, user, columnHeaders)
+  
   var account = comm.get_accountName(email)   
   Logger.log("account="+account)
   try {
@@ -29,9 +29,9 @@ function processForm(theForm) {
       var user_size = Object.keys(user).length
       
       if( user_size > 0 ) {
-        var newname = Utilities.formatString("%03d.%02d-%s_%s_%s.%s", user["期數"], user["號碼"], user["姓名"], cht_list[l], account, ext)
+        var newname = Utilities.formatString("%03d.%02d-%s_%s_%s.%s", user["期數"], user["號碼"], user["姓名"], comm.cht_list[l], account, ext)
       } else {
-        var newname = Utilities.formatString("%s_%s.%s", cht_list[l], account, ext)
+        var newname = Utilities.formatString("%s_%s.%s", comm.cht_list[l], account, ext)
       }
       
       fileBlob.setName(newname)
