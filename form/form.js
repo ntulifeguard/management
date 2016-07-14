@@ -36,7 +36,6 @@ function onSubmit(e) {
     }
   }
 
-
   if( comm.get_columnHeaders(columnHeaders) ) {
     Logger.log(columnHeaders)
   } else {
@@ -47,16 +46,22 @@ function onSubmit(e) {
   
   Logger.log("inputed_email="+inputed_email)
   
-  var retries = 0;
-  var index = get_rowNumber(inputed_email, columnHeaders)
-
-  Logger.log("index="+index)
-
-  if( index > 0 ) {
-    var cell = columnHeaders["edit2_id"] + index.toString()
-    Logger.log(cell)
-    var r_edit2 = sheet.getRange(cell)
-    r_edit2.setValue(formResponse_id)
+  var retry_max = 3;
+  for( var i=0; i<retry_max; i++ ) { 
+    var index = get_rowNumber(inputed_email, columnHeaders)
+    Logger.log("index="+index)
+    
+    if( index > 0 ) {
+      var cell = columnHeaders["edit2_id"] + index.toString()
+      
+      Logger.log(cell)      
+      var r_edit2 = sheet.getRange(cell)
+      r_edit2.setValue(formResponse_id)
+      
+      break
+    } else {
+      Logger.log("Failed to get edit2_id column")
+    }    
   }
  
   //
