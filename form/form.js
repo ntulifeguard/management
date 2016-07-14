@@ -15,7 +15,6 @@ function onSubmit(e) {
   Logger.log(e)
   var form_title = form.getTitle()
   var formResponse = e.response 
-
   var prefilledUrl = formResponse.toPrefilledUrl()
   var formResponse_id = formResponse.getId()
   var itemResponses = formResponse.getItemResponses()
@@ -23,18 +22,6 @@ function onSubmit(e) {
   Logger.log("prefilledUrl="+prefilledUrl)
   Logger.log("formResponse_id="+formResponse_id)
   Logger.log("form_title="+form_title)
-  
-  var ss = SpreadsheetApp.openById(id.ss)
-  var sheet = ss.getSheets()[0]
-  
-  var inputed_email = null
-  for(var i in itemResponses) {
-    var item = itemResponses[i].getItem()
-    var title = item.getTitle()
-    if( title == "Email" ) {
-      inputed_email = itemResponses[i].getResponse()
-    }
-  }
 
   if( comm.get_columnHeaders(columnHeaders) ) {
     Logger.log(columnHeaders)
@@ -44,31 +31,42 @@ function onSubmit(e) {
 
   comm.get_userData(email, user, columnHeaders)
   
-  Logger.log("inputed_email="+inputed_email)
-  
   var retry_max = 3;
+  
+  // get user's index
   for( var i=0; i<retry_max; i++ ) { 
-    var index = get_rowNumber(inputed_email, columnHeaders)
+    var index = get_rowNumber(email, columnHeaders)
     Logger.log("index="+index)
     
     if( index > 0 ) {
-      var cell = columnHeaders["edit2_id"] + index.toString()
-      
-      Logger.log(cell)      
-      var r_edit2 = sheet.getRange(cell)
-      r_edit2.setValue(formResponse_id)
-      
+      // write Email and edit2_id to spreadsheet
+      set_userData("Email", index, email)
+      set_userData("edit2_id", index, formResponse_id)
       break
     } else {
-      Logger.log("Failed to get edit2_id column")
+      Logger.log("Failed to get user's index")
     }    
   }
+
  
-  //
+  // update images' name
   update_imageNames()
  
   return
 }
+
+
+function set_userData(header, index, value) { 
+  var ss = SpreadsheetApp.openById(id.ss)
+  var sheet = ss.getSheets()[0]
+  var cell = columnHeaders[header] + index.toString()
+  Logger.log("cell="+cell)
+  Logger.log("value="+value)
+  
+  var range = sheet.getRange(cell)
+  range.setValue(value)
+}
+
 
 function update_imageNames() {
   var account = comm.get_accountName(email)  
