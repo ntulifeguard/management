@@ -68,8 +68,8 @@ function get_messageBoardUrl() {
 
 function get_greetingText() {
   var text = "新朋友你好!"
-  Logger.log(comm.user)
-  if( user ) {
+
+  if( Object.keys(user).length > 0 ) {
     if( user["期數"] ) {
       text = Utilities.formatString("歡迎 %s 期的夥伴!", user["期數"])
     } 

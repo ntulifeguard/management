@@ -39,27 +39,16 @@ function gviz_query(ss_id, query, user, columnHeaders) {
 }
 
 
-//get_columnHeaders()
-//var columnHeaders = {};
-//var user = {};
-
 function get_userData(email, user, columnHeaders) {
   if( Object.keys(columnHeaders).length > 0 ) {
     var query = Utilities.formatString("select * where ( %s = '%s' )", columnHeaders["Email"], email)
     gviz_query(id.ss, query, user, columnHeaders)
-    Logger.log("222222222222222")
     Logger.log(user)
-    Logger.log("gggggggggggggggg")
-//    user = userData
-    //return userData
   } else {
     ;;
-    //return null
   }
 }
 
-
-// Logger.log(arguments.callee.name+":"+)
 
 function get_columnHeaders(columnHeaders) {
   var gviz_url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20*%%20where%%20(%%20A%%20%%3D%%20-1%%20)", id.ss) 

@@ -3,9 +3,6 @@ var user = {}
 var columnHeaders = {}
   
 function doGet(e) {
-  comm.get_columnHeaders(columnHeaders)
-  comm.get_userData(email, user, columnHeaders)
-
   return HtmlService.createTemplateFromFile('form.html')
     .evaluate()
     .setSandboxMode(HtmlService.SandboxMode.IFRAME);
@@ -15,6 +12,9 @@ function doGet(e) {
 function processForm(theForm) {
   var list = ["headshot","license1","license2"]
   var cht_list = ["大頭照", "救生證", "教練證"]
+       
+  comm.get_columnHeaders(columnHeaders)
+  comm.get_userData(email, user, columnHeaders)
        
   try {
     for( var l in list ) {
