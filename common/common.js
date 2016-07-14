@@ -44,7 +44,7 @@ function gviz_query(ss_id, query, user, columnHeaders) {
 //var user = {};
 
 function get_userData(email, user, columnHeaders) {
-  if( columnHeaders != null ) {
+  if( Object.keys(columnHeaders).length > 0 ) {
     var query = Utilities.formatString("select * where ( %s = '%s' )", columnHeaders["Email"], email)
     gviz_query(id.ss, query, user, columnHeaders)
     Logger.log("222222222222222")
@@ -53,7 +53,7 @@ function get_userData(email, user, columnHeaders) {
 //    user = userData
     //return userData
   } else {
-    user = {}
+    ;;
     //return null
   }
 }

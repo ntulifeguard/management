@@ -38,7 +38,7 @@ function get_newFormUrl() {
 function get_umUrl() {
   var um_url = null;
    
-  if( user == null ) {
+  if( Object.keys(user).length < 1 ) {
     um_url = get_newFormUrl(email)
   } else {
     var edit2_id = user["edit2_id"]

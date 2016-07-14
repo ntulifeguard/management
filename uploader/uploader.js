@@ -1,7 +1,11 @@
 var email = Session.getActiveUser().getEmail()
-var user = comm.get_userData(email)
+var user = {}
+var columnHeaders = {}
   
 function doGet(e) {
+  comm.get_columnHeaders(columnHeaders)
+  comm.get_userData(email, user, columnHeaders)
+
   return HtmlService.createTemplateFromFile('form.html')
     .evaluate()
     .setSandboxMode(HtmlService.SandboxMode.IFRAME);
