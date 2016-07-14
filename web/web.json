@@ -14,6 +14,11 @@
             "type": "html", 
             "id": "04a9bec9-3134-4845-8367-7a10fde1b785", 
             "name": "links"
+        }, 
+        {
+            "type": "server_js", 
+            "id": "d900d499-5166-4dbf-a415-36354703ea8e", 
+            "name": "greeting"
         }
     ], 
     "id": "1kie1q_1KMH3jGU8hntcZqF9EIJDtqF-A-X3xYKPfgwv2Hhk-4Ud7ne00"
