@@ -15,7 +15,8 @@ function processForm(theForm) {
        
   comm.get_columnHeaders(columnHeaders)
   comm.get_userData(email, user, columnHeaders)
-       
+  var account = comm.get_accountName(email)   
+  Logger.log("account="+account)
   try {
     for( var l in list ) {
       var fileBlob = theForm[list[l]];
@@ -25,7 +26,13 @@ function processForm(theForm) {
       }
        
       var ext = oriname.split('.').pop();
-      var newname = Utilities.formatString("%03d.%02d-%s_%s.%s", user["期數"], user["號碼"], user["姓名"], cht_list[l], ext)
+      var user_size = Object.keys(user).length
+      
+      if( user_size > 0 ) {
+        var newname = Utilities.formatString("%03d.%02d-%s_%s_%s.%s", user["期數"], user["號碼"], user["姓名"], cht_list[l], account, ext)
+      } else {
+        var newname = Utilities.formatString("%s_%s.%s", cht_list[l], account, ext)
+      }
       
       fileBlob.setName(newname)
       Logger.log("fileBlob Ori Name: " + oriname)
@@ -33,8 +40,16 @@ function processForm(theForm) {
       Logger.log("fileBlob type: " + fileBlob.getContentType())
       Logger.log('fileBlob: ' + fileBlob);
     
-      var fldrSssn = DriveApp.getFolderById(id.imageFolder);
-        fldrSssn.createFile(fileBlob);
+      var folder_imageRoot = DriveApp.getFolderById(id.imageFolder);
+      var folders = folder_imageRoot.getFoldersByName(account)
+      if( folders.hasNext() ) {
+        var folder_user = folders.next()
+        folder_user.createFile(fileBlob);
+      } else {
+        var new_folder_user = folder_imageRoot.createFolder(account)
+        new_folder_user.createFile(fileBlob);
+      }
+
     }   
   } catch(e) {
     throw 0

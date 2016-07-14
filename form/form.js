@@ -9,6 +9,7 @@ function installTrigger() {
 }
 
 var columnHeaders = {}
+var user = {}
 
 function onSubmit(e) {
   Logger.log(e)
@@ -41,6 +42,9 @@ function onSubmit(e) {
   } else {
     throw "Failed to call columnHeaders()"
   }
+
+  comm.get_userData(email, user, columnHeaders)
+  
   Logger.log("inputed_email="+inputed_email)
   
   var retries = 0;
@@ -55,9 +59,37 @@ function onSubmit(e) {
     r_edit2.setValue(formResponse_id)
   }
  
+  //
+  update_imageNames()
+ 
   return
 }
 
+function update_imageNames() {
+  var account = comm.get_accountName(email)  
+  var folder_imageRoot = DriveApp.getFolderById(id.imageFolder);
+  var folders = folder_imageRoot.getFoldersByName(account)
+  var cht_list = ["大頭照", "救生證", "教練證"]
+
+  while (folders.hasNext()) {
+    var folder_user = folders.next()
+    var files = folder_user.getFiles()
+      while (files.hasNext()) {
+        var file = files.next();
+        var fileName = file.getName()
+        var ext = fileName.split('.').pop();
+        for(var i in cht_list) {
+          var assumedName = Utilities.formatString("%s_%s.%s", cht_list[i], account, ext)
+          
+          if( fileName == assumedName ) {
+            var newName = Utilities.formatString("%03d.%02d-%s_%s", user["期數"], user["號碼"], user["姓名"], assumedName)
+            file.setName(newName)
+          }
+        }
+      }
+  }
+   
+}
 
 
 function get_rowNumber(inputed_email, columnHeaders) {

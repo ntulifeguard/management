@@ -50,6 +50,16 @@ function get_userData(email, user, columnHeaders) {
 }
 
 
+function get_accountName(email) {
+  
+  if( email != null ) {
+    var account = email.split("@")[0]
+    return account
+  } else {
+    return null
+  }
+}
+
 function get_columnHeaders(columnHeaders) {
   var gviz_url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20*%%20where%%20(%%20A%%20%%3D%%20-1%%20)", id.ss) 
   Logger.log(arguments.callee.name+":"+gviz_url)
