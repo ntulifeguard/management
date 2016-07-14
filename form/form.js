@@ -1,6 +1,7 @@
 var form = FormApp.openById(id.form);
 var email = Session.getActiveUser().getEmail()
 
+
 function installTrigger() {
   ScriptApp.newTrigger('onSubmit')
      .forForm(form)
@@ -8,8 +9,10 @@ function installTrigger() {
      .create();
 }
 
+
 var columnHeaders = {}
 var user = {}
+
 
 function onSubmit(e) {
   Logger.log(e)
