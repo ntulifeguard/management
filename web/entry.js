@@ -2,9 +2,7 @@ var this_version = "v0.1"
 
 var email = Session.getActiveUser().getEmail()
 var language_code = "zh_TW"
-
 var service_url = ScriptApp.getService().getUrl() + "&hl=" +language_code
-//var user = comm.get_userData(email)
 
 var user = {}
 var columnHeaders = {}

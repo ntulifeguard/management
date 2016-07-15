@@ -32,18 +32,19 @@ function onSubmit(e) {
     throw "Failed to call columnHeaders()"
   }
 
-  comm.get_userData(email, user, columnHeaders)
+  //comm.get_userData(email, user, columnHeaders)
+  var inputedEmail = get_userInputedEmail(itemResponses)
   
   var retry_max = 3;
   
   // get user's index
   for( var i=0; i<retry_max; i++ ) { 
-    var index = get_rowNumber(email, columnHeaders)
+    var index = get_rowNumber(inputedEmail, columnHeaders)
     Logger.log("index="+index)
     
     if( index > 0 ) {
       // write Email and edit2_id to spreadsheet
-      set_userData("Email", index, email)
+      set_userData("Email", index, inputedEmail)
       set_userData("edit2_id", index, formResponse_id)
       break
     } else {
@@ -56,6 +57,20 @@ function onSubmit(e) {
   update_imageNames()
  
   return
+}
+
+
+function get_userInputedEmail(itemResponses) {
+  var inputed_email = null
+  for(var i in itemResponses) {
+    var item = itemResponses[i].getItem()
+    var title = item.getTitle()
+    if( title == "Email" ) {
+      inputed_email = itemResponses[i].getResponse()
+    }
+  }
+  
+  return inputed_email
 }
 
 
