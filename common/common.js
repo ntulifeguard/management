@@ -1,39 +1,49 @@
+function sizeOf(obj) {
+  return Object.keys(obj).length 
+}
+
 function gviz_query(ss_id, query, user, columnHeaders) {
   var query_encoded = encodeURIComponent(query)
   var url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=%s", ss_id, query_encoded) 
   var response = UrlFetchApp.fetch(url)
-  Logger.log(url)
   var text = response.getContentText()
-  Logger.log(text)
-  var pat = /"rows":\[{"c":(.*)}]}}\);/ig
+
+//  var pat = /"rows":\[{"c":(.*)}]}}\);/ig
+  var pat = /table":({.+)}\);/ig
   var r = pat.exec(text)
   if( r == null ) {
-    return null
+    return false
   }
   
   var data = JSON.parse(r[1])
-  
-//  var obj = {}
-  var i =0;
-  for(var d in columnHeaders) {
-    if( data[i] != null ) {
-      user[d] = data[i]["v"]
-    } else {
-      user[d] = ""
-    }
-    i++
-  }
-  
-  var objcount = 0;
-  for( var o in columnHeaders ) {
-    objcount++
+  if( data["rows"].length == 0 ) {
+    user = {}
+    return true
   }
 
-  if( objcount > 0 ) {
+  var i =0;
+  // [{c=[{v=Date(2016,6,15,10,51,14), f=7/15/2016 10:51:14}, ... ]}]
+  try {
+    for(var d in columnHeaders) {
+      var rows = data["rows"]
+      var values = rows[0]["c"]
+      if( values[i] != null ) {
+        user[d] = values[i]["v"]
+      } else {
+        user[d] = ""
+      }
+      i++
+    }
+  } catch(e) {
+    return false
+  }
+
+  if( sizeOf(user) > 0 ) {
     return true
   } else {
+    // we have row data but failed to parse it.
     user = {}
-    return false
+    return false 
   }
   
 }
@@ -41,12 +51,13 @@ function gviz_query(ss_id, query, user, columnHeaders) {
 var cht_list = ["大頭照", "救生證", "教練證"]
 
 function get_userData(email, user, columnHeaders) {
-  if( Object.keys(columnHeaders).length > 0 ) {
+  if( sizeOf(columnHeaders) > 0 ) {
     var query = Utilities.formatString("select * where ( %s = '%s' )", columnHeaders["Email"], email)
-    gviz_query(id.ss, query, user, columnHeaders)
-    Logger.log(user)
+    var ret_gviz = gviz_query(id.ss, query, user, columnHeaders) 
+    
+    return ret_gviz   
   } else {
-    ;;
+    return false
   }
 }
 
@@ -73,32 +84,31 @@ function get_columnHeaders(columnHeaders) {
   var r = pat.exec(text)
   if( r == null ) {
     Logger.log(arguments.callee.name+":"+"not found")
-    return null
+    return false
   }
 
-  var data = JSON.parse(r[1]);
-  Logger.log(arguments.callee.name+":data")
-  Logger.log(data)
+  try {
+    var data = JSON.parse(r[1]);
+    Logger.log(arguments.callee.name+":data")
+    Logger.log(data)
+    
+    var cols = data["cols"]
   
-  var cols = data["cols"]
-
-  for( var i in cols ) {
-   
-    var label = cols[i]["label"]
-    if( label != "" ) {
-      columnHeaders[label] = cols[i]["id"]
+    for( var i in cols ) {
+     
+      var label = cols[i]["label"]
+      if( label != "" ) {
+        columnHeaders[label] = cols[i]["id"]
+      }
     }
-  }
-  
-  var objcount = 0;
-  for( var o in columnHeaders ) {
-    objcount++
+  } catch(e) {
+    return false
   }
   
   Logger.log(arguments.callee.name+":columnHeaders")
   Logger.log(columnHeaders)
   
-  if( objcount < 1 ) {
+  if( sizeOf(columnHeaders) < 1 ) {
     columnHeaders = {}
     return false
   } else {
