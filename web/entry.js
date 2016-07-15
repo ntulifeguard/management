@@ -7,19 +7,20 @@ var service_url = ScriptApp.getService().getUrl() + "&hl=" +language_code
 var user = {}
 var columnHeaders = {}
 
+
 function doGet(e) {
   Logger.log(e)
   
   var ret_columnHeaders = comm.get_columnHeaders(columnHeaders)
   var ret_userData = comm.get_userData(email, user, columnHeaders)
 
-  if( ret_columnHeaders != true ) {
-    throw "Error: get_columnHeaders failed"
-  }
-  
-  if( ret_userData != true ) {
-    throw "Error: get_userData() failed"
-  }
+//  if( ret_columnHeaders != true ) {
+//    throw "Error: get_columnHeaders failed"
+//  }
+//  
+//  if( ret_userData != true ) {
+//    throw "Error: get_userData() failed"
+//  }
 
   return HtmlService
       .createTemplateFromFile('index')
@@ -44,7 +45,7 @@ function get_newFormUrl() {
 function get_umUrl() {
   var um_url = null;
    
-  if( comm.sizeOf(user).length < 1 ) {
+  if( comm.sizeOf(user) < 1 ) {
     um_url = get_newFormUrl(email)
   } else {
     var edit2_id = user["edit2_id"]

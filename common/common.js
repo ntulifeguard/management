@@ -84,6 +84,7 @@ function get_columnHeaders(columnHeaders) {
   var r = pat.exec(text)
   if( r == null ) {
     Logger.log(arguments.callee.name+":"+"not found")
+    columnHeaders = {}
     return false
   }
 
@@ -102,6 +103,7 @@ function get_columnHeaders(columnHeaders) {
       }
     }
   } catch(e) {
+    columnHeaders = {}
     return false
   }
   
