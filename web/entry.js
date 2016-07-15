@@ -84,7 +84,7 @@ function get_randomText() {
 function get_greetingText() {
   var text = "新朋友你好!"
 
-  if( comm.sizeOf(user).length > 0 ) {
+  if( comm.sizeOf(user) > 0 ) {
     if( user["期數"] ) {
       var text = Utilities.formatString("歡迎 %s 期的救生員!", user["期數"])
     } 
