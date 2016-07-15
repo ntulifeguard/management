@@ -48,7 +48,6 @@ function gviz_query(ss_id, query, user, columnHeaders) {
   
 }
 
-var cht_list = ["大頭照", "救生證", "教練證"]
 
 function get_userData(email, user, columnHeaders) {
   if( sizeOf(columnHeaders) > 0 ) {
@@ -71,6 +70,7 @@ function get_accountName(email) {
     return null
   }
 }
+
 
 function get_columnHeaders(columnHeaders) {
   var gviz_url = Utilities.formatString("https://docs.google.com/spreadsheets/d/%s/gviz/tq?tq=select%%20*%%20where%%20(%%20A%%20%%3D%%20-1%%20)", id.ss) 
