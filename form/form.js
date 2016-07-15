@@ -32,7 +32,6 @@ function onSubmit(e) {
     throw "Failed to call columnHeaders()"
   }
 
-  //comm.get_userData(email, user, columnHeaders)
   var inputedEmail = get_userInputedEmail(itemResponses)
   
   var retry_max = 3;
@@ -49,7 +48,9 @@ function onSubmit(e) {
       break
     } else {
       Logger.log("Failed to get user's index")
-    }    
+    }
+    
+    Utilities.sleep(300)
   }
 
  
