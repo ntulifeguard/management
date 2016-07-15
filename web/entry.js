@@ -8,11 +8,19 @@ var user = {}
 var columnHeaders = {}
 
 function doGet(e) {
- 
-  comm.get_columnHeaders(columnHeaders)
-  comm.get_userData(email, user, columnHeaders)
-  
   Logger.log(e)
+  
+  var ret_columnHeaders = comm.get_columnHeaders(columnHeaders)
+  var ret_userData = comm.get_userData(email, user, columnHeaders)
+
+  if( ret_columnHeaders != true ) {
+    throw "Error: get_columnHeaders failed"
+  }
+  
+  if( ret_userData != true ) {
+    throw "Error: get_userData() failed"
+  }
+
   return HtmlService
       .createTemplateFromFile('index')
       .evaluate()
