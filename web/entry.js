@@ -44,7 +44,7 @@ function get_newFormUrl() {
 function get_umUrl() {
   var um_url = null;
    
-  if( Object.keys(user).length < 1 ) {
+  if( comm.sizeOf(user).length < 1 ) {
     um_url = get_newFormUrl(email)
   } else {
     var edit2_id = user["edit2_id"]
@@ -83,7 +83,7 @@ function get_randomText() {
 function get_greetingText() {
   var text = "新朋友你好!"
 
-  if( Object.keys(user).length > 0 ) {
+  if( comm.sizeOf(user).length > 0 ) {
     if( user["期數"] ) {
       var text = Utilities.formatString("歡迎 %s 期的救生員!", user["期數"])
     } 
