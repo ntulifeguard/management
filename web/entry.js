@@ -1,4 +1,4 @@
-var this_version = "v0.1"
+var this_version = "v1.0"
 
 var email = Session.getActiveUser().getEmail()
 var language_code = "zh_TW"
