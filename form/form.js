@@ -32,19 +32,19 @@ function onSubmit(e) {
     throw "Failed to call columnHeaders()"
   }
 
-  var inputedEmail = get_userInputedEmail(itemResponses)
-  Logger.log("inputedEmail="+inputedEmail)
+  var inputtedEmail = get_userinputtedEmail(itemResponses)
+  Logger.log("inputtedEmail="+inputtedEmail)
   
   var retry_max = 3;
   
   // get user's index
   for( var i=0; i<retry_max; i++ ) { 
-    var index = get_rowNumber(inputedEmail, columnHeaders)
+    var index = get_rowNumber(inputtedEmail, columnHeaders)
     Logger.log("index="+index)
     
     if( index > 0 ) {
       // write Email and edit2_id to spreadsheet
-      set_userData("Email", index, inputedEmail)
+      set_userData("Email", index, inputtedEmail)
       set_userData("edit2_id", index, formResponse_id)
       break
     } else {
@@ -54,27 +54,27 @@ function onSubmit(e) {
     Utilities.sleep(300)
   }
 
-  // update user's data with inputedEmail
-  comm.get_userData(inputedEmail, user, columnHeaders)
+  // update user's data with inputtedEmail
+  comm.get_userData(inputtedEmail, user, columnHeaders)
   
   // update images' name
-  update_imageNames(inputedEmail)
+  update_imageNames(inputtedEmail)
  
   return
 }
 
 
-function get_userInputedEmail(itemResponses) {
-  var inputedEmail = null
+function get_userinputtedEmail(itemResponses) {
+  var inputtedEmail = null
   for(var i in itemResponses) {
     var item = itemResponses[i].getItem()
     var title = item.getTitle()
     if( title == "Email" ) {
-      inputedEmail = itemResponses[i].getResponse()
+      inputtedEmail = itemResponses[i].getResponse()
     }
   }
   
-  return inputedEmail
+  return inputtedEmail
 }
 
 
@@ -90,8 +90,8 @@ function set_userData(header, index, value) {
 }
 
 
-function update_imageNames(inputedEmail) {
-  var account = comm.get_accountName(inputedEmail)  
+function update_imageNames(inputtedEmail) {
+  var account = comm.get_accountName(inputtedEmail)  
   var folder_imageRoot = DriveApp.getFolderById(id.imageFolder);
   var folders = folder_imageRoot.getFoldersByName(account)
   
