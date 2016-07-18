@@ -2,6 +2,7 @@ var email = Session.getActiveUser().getEmail()
 var user = {}
 var columnHeaders = {}
   
+  
 function doGet(e) {
   return HtmlService.createTemplateFromFile('form.html')
     .evaluate()

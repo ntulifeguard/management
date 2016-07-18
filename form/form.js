@@ -33,6 +33,7 @@ function onSubmit(e) {
   }
 
   var inputedEmail = get_userInputedEmail(itemResponses)
+  Logger.log("inputedEmail="+inputedEmail)
   
   var retry_max = 3;
   
@@ -53,25 +54,27 @@ function onSubmit(e) {
     Utilities.sleep(300)
   }
 
- 
+  // update user's data with inputedEmail
+  comm.get_userData(inputedEmail, user, columnHeaders)
+  
   // update images' name
-  update_imageNames()
+  update_imageNames(inputedEmail)
  
   return
 }
 
 
 function get_userInputedEmail(itemResponses) {
-  var inputed_email = null
+  var inputedEmail = null
   for(var i in itemResponses) {
     var item = itemResponses[i].getItem()
     var title = item.getTitle()
     if( title == "Email" ) {
-      inputed_email = itemResponses[i].getResponse()
+      inputedEmail = itemResponses[i].getResponse()
     }
   }
   
-  return inputed_email
+  return inputedEmail
 }
 
 
@@ -87,29 +90,31 @@ function set_userData(header, index, value) {
 }
 
 
-function update_imageNames() {
-  var account = comm.get_accountName(email)  
+function update_imageNames(inputedEmail) {
+  var account = comm.get_accountName(inputedEmail)  
   var folder_imageRoot = DriveApp.getFolderById(id.imageFolder);
   var folders = folder_imageRoot.getFoldersByName(account)
   
   while (folders.hasNext()) {
     var folder_user = folders.next()
     var files = folder_user.getFiles()
-      while (files.hasNext()) {
-        var file = files.next();
-        var fileName = file.getName()
-        var ext = fileName.split('.').pop();
-        for(var i in comm.cht_list) {
-          var assumedName = Utilities.formatString("%s_%s.%s", comm.cht_list[i], account, ext)
-          
-          if( fileName == assumedName ) {
-            var newName = Utilities.formatString("%03d.%02d-%s_%s", user["期數"], user["號碼"], user["姓名"], assumedName)
-            file.setName(newName)
-          }
+    while (files.hasNext()) {
+      var file = files.next();
+      var fileName = file.getName()
+      var ext = fileName.split('.').pop();
+      
+      for(var i in comm.cht_list) {
+        var assumedName = Utilities.formatString("%s_%s.%s", comm.cht_list[i], account, ext)
+        
+        if( fileName == assumedName ) {
+          Logger.log("Found="+fileName)
+          var newName = Utilities.formatString("%03d.%02d-%s_%s", user["期數"], user["號碼"], user["姓名"], assumedName)
+          Logger.log("newName="+newName)
+          file.setName(newName)
         }
       }
+    }
   }
-   
 }
 
 
