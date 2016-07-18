@@ -16,8 +16,8 @@ function processForm(theForm) {
   comm.get_columnHeaders(columnHeaders)
   comm.get_userData(email, user, columnHeaders)
 
-
   var uploaded_count = 0
+  var toUpload_count = 0
   var noname_count = 0
   var account = comm.get_accountName(email)   
   Logger.log("account="+account)
@@ -28,9 +28,15 @@ function processForm(theForm) {
       if( oriname == '' ) {
         noname_count++
         continue
+      } else {
+        toUpload_count++
       }
-       
-      var ext = oriname.split('.').pop();
+      
+      if( oriname.indexOf(".") > 0 ) {
+        var ext = oriname.split('.').pop();
+      } else {
+        var ext = "noext"
+      }
       
       if( comm.sizeOf(user) > 0 ) {
         var newname = Utilities.formatString("%03d.%02d-%s_%s_%s.%s", user["期數"], user["號碼"], user["姓名"], comm.cht_list[l], account, ext)
@@ -62,6 +68,10 @@ function processForm(theForm) {
     if( noname_count == list.length ) {
       throw "為什麼沒選檔案就按上傳？抬頭捷摸兩邊水道頭，出發。"
     }    
+    
+    if( toUpload_count != uploaded_count ) {
+      throw "上傳錯誤，請檢查檔案再次上傳"
+    }
     
     Logger.log(uploaded_count+ " files uploaded")
     
