@@ -1,3 +1,5 @@
+var cht_list = ["大頭照", "救生證", "教練證"]
+
 function sizeOf(obj) {
   return Object.keys(obj).length 
 }

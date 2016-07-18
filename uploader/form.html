@@ -19,19 +19,15 @@
 <script>
 
 function picUploadJs(frmData) {
-
   document.getElementById('status').style.display = 'inline';
-//  var outputDiv = document.getElementById('status');
-//  outputDiv.innerHTML = "Uploading";
   updateOutput("上傳中...")
 
   var ret = google.script.run
     .withSuccessHandler(doneOutput)
     .withFailureHandler(badOutput)
     .processForm(frmData)
-};
-  // Javascript function called by "submit" button handler,
-  // to show results.
+}
+
 
 function updateOutput(text) {
   var outputDiv = document.getElementById('status');
@@ -39,16 +35,29 @@ function updateOutput(text) {
   outputDiv.innerHTML = text;
 }
 
-function doneOutput() {
+function doneOutput(e) {
   var outputDiv = document.getElementById('status');
   outputDiv.style.color="green"
   outputDiv.innerHTML = "上傳成功!";
+  
+  var list = ["headshot","license1","license2"]
+  
+  for( var i in list ) {
+    var input = document.getElementsByName(list[i])[0]
+    input.value=""
+    console.log(input.value)
+  }
 }
 
-function badOutput() {
+function badOutput(e) {
   var outputDiv = document.getElementById('status');
   outputDiv.style.color="red"
-  outputDiv.innerHTML = "失敗! 請重新上傳!";
+  if( e ) {
+    outputDiv.innerHTML = e;
+  } else {
+    outputDiv.innerHTML = "失敗! 請重新上傳!";  
+  }
+//  
 }
 
 
