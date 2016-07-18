@@ -3,6 +3,7 @@ var this_version = "v1.0"
 var email = Session.getActiveUser().getEmail()
 var language_code = "zh_TW"
 var service_url = ScriptApp.getService().getUrl() + "&hl=" +language_code
+var landing_url = "https://sites.google.com/site/ntulifeguardsystem"
 
 var user = {}
 var columnHeaders = {}
@@ -49,7 +50,7 @@ function get_umUrl() {
 
 
 function get_logoutUrl() {
-  var logout_str = Utilities.formatString("https://accounts.google.com/Logout?continue=%s&hl=%s", service_url, language_code)
+  var logout_str = Utilities.formatString("https://accounts.google.com/Logout?continue=%s&hl=%s", landing_url, language_code)
   return logout_str
 }
 
