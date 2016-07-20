@@ -1,0 +1,110 @@
+<div id="formDiv">
+  學員資料上傳<br>
+  * 每個圖檔大小不得超過2MB
+  <form id="myForm" onsubmit="handleFormSubmit(this)" >
+      救生班期數: <input name="userClass" type="number" min="34" max="9999" required /> <br/>
+      姓名: <input name="userName" type="text" pattern=".{2,}" required /> <br/>
+      新編班號碼: <input name="userNumber" type="number" min="1" max="99" required /><br/>
+      大頭照: <input name="headShot" type="file" onclick="updateOutput('')" /> <br/>
+      身份證件正面: <input name="idFront" type="file" onclick="updateOutput('')" /> <br/>
+      身份證件反面: <input name="idBack" type="file" onclick="updateOutput('')" /> <br/>
+      <input id="submitBtn" type="submit" value="上傳" />
+  </form>
+</div>
+
+
+<div id="status" style="display: inline">
+</div>
+
+
+<script>
+  function preventFormSubmit() {
+    var forms = document.querySelectorAll('form');
+    for (var i = 0; i < forms.length; i++) {
+      forms[i].addEventListener('submit', function(event) {
+        event.preventDefault();
+      });
+    }
+  }
+  
+  window.addEventListener('load', preventFormSubmit);
+  
+  function handleFormSubmit(formObject) {
+    var userClass = formObject.elements["userClass"].value
+    var userNumber = formObject.elements["userNumber"].value
+    var userName = formObject.elements["userName"].value
+    
+    var picList = ["headShot", "idFront", "idBack"]
+    
+    var emptyCount = 0
+    for( var i in picList) {
+      var value = formObject.elements[picList[i]].value
+      if( value == "" ) {
+        emptyCount++
+      }
+    }
+    
+    if( emptyCount == picList.length ) {
+      badOutput(userName+"! 第幾天了! 至少要選擇一個檔案上傳!")
+      return
+    }
+    updateOutput("上傳中...")
+    disableBtn(true)
+    
+    google.script.run
+    .withSuccessHandler(doneOutput)
+    .withFailureHandler(badOutput)
+    .processForm(formObject);
+  } 
+
+
+  function validateInput(form) {
+    console.log(form.elements["userNumber"].value)
+    return form
+    picUploadJs(form)
+  }
+  
+  function disableBtn(disabled) {
+    var submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = disabled
+  }
+  
+
+  function updateOutput(text) {
+    var outputDiv = document.getElementById('status');
+    outputDiv.style.color="blue"
+    outputDiv.innerHTML = text;
+  }
+
+
+  function doneOutput(e) {
+    var outputDiv = document.getElementById('status');
+    outputDiv.style.color="green"
+    outputDiv.innerHTML = "上傳成功!";
+    
+    var list = ["headShot", "idFront", "idBack"]
+    
+    for( var i in list ) {
+      var input = document.getElementsByName(list[i])[0]
+      input.value=""
+      console.log(input.value)
+    }
+    
+    disableBtn(false)
+  }
+
+
+  function badOutput(e) {
+    var outputDiv = document.getElementById('status');
+    outputDiv.style.color="red"
+    if( e ) {
+      outputDiv.innerHTML = e;
+    } else {
+      outputDiv.innerHTML = "失敗! 請重新上傳!";  
+    }
+    
+    disableBtn(false)
+  }
+
+
+</script>
